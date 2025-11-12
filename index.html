@@ -13,7 +13,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style id="Color-Control-Panel">
-    :root {
+  :root {
       /* --- Primary Theme Color (e.g., Orange) --- */
       --color-primary-50: #fff7ed;
       --color-primary-100: #ddd5ff;
@@ -90,18 +90,17 @@
     const Sparkle = ({ className }) => ( <Icon className={className}><path d="M12 2l2.3 7.4h7.7l-6 4.6 2.3 7.4-6-4.6-6 4.6 2.3-7.4-6-4.6h7.7L12 2z" /></Icon> );
     const Utensils = ({ className }) => ( <Icon className={className}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2" /><path d="M7 2v20" /><path d="M21 15V2c0-1.1-.9-2-2-2h-4a2 2 0 00-2 2v13c0 1.1.9 2 2 2h4a2 2 0 002-2z" /></Icon> );
     const GlassOfWine = ({ className }) => ( <Icon className={className}><path d="M8 22h8" /><path d="M12 15v7" /><path d="M12 15a5 5 0 005-5 5 5 0 00-10 0 5 5 0 005 5z" /><path d="M12 15V10" /></Icon> );
-    
-    // --- NEW --- Icons for Search and Back
     const ArrowLeft = ({ className }) => ( <Icon className={className}><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></Icon> );
     const Search = ({ className }) => ( <Icon className={className}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></Icon> );
     const X = ({ className }) => ( <Icon className={className}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></Icon> );
+    
+    // --- NEW --- Icon for History
+    const ClipboardList = ({ className }) => ( <Icon className={className}><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><line x1="12" y1="11" x2="12" y2="17" /><line x1="9" y1="14" x2="15" y2="14" /></Icon> );
+    const RotateCw = ({ className }) => ( <Icon className={className}><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></Icon> );
 
 
     // --- 🖼️ IMAGE & DATA SECTION ---
-    const restaurant = {
-      name: "Dine Smart 1.0",
-      slogan: "By Unitapp!"
-    };
+    const restaurant = { name: "Dine Smart 1.0", slogan: "Where every bite is a fiery delight!" };
     const logoUrl = "dinesmartlogo.png";
     const heroImageUrl = "bg.png"; 
     
@@ -112,17 +111,14 @@
     };
 
     const menuData = {
-      specials: [
-        { id: 's1', name: 'Panner Tikka Masala', price: 1899, image: 'panner tikka.jpg', description: 'Limited time, fall-off-the-bone ribs!' },
-        { id: 's2', name: 'Truffle-infused Pasta', price: 1599, image: 'pasta.jpg', description: 'Our chef\'s signature dish.' },
-      ],
+      specials: [ { id: 's1', name: 'Volcano panner tikka', price: 1899, image: 'panner tikka.jpg', description: 'Limited time, fresh panner tikka ribs!' }, { id: 's2', name: 'Truffle-infused Pasta', price: 1599, image: 'pasta.jpg', description: 'Our chef\'s signature dish.' }, ],
       appetizers: [ { id: 'a1', name: 'Spicy Spring Rolls', price: 349, image: 'spingroll.jpg' }, { id: 'a2', name: 'Cheesy Garlic Bread', price: 299, image: 'garlic bread.jpg' }, { id: 'a3', name: 'Tomato Bruschetta', price: 399, image: 'tomato.jpg' }, ],
       mainCourses: [ { id: 'm1', name: 'Fiery Margherita Pizza', price: 599, image: 'pizza.jpeg' }, { id: 'm2', name: 'Smoked BBQ Burger', price: 499, image: 'burgur.jpg' }, { id: 'm3', name: 'Creamy Sun-Dried Tomato Pasta', price: 649, image: 'creamypasta.jpg' }, ],
       drinks: [ { id: 'd1', name: 'Sparkling Orange', price: 149, image: 'orange.jpg' }, { id: 'd2', name: 'Fresh Lemonade', price: 129, image: 'lemon.jpg' }, ],
     };
 
     // --- Helper Component: Header ---
-    // --- MODIFIED --- Added "Back to Menu" button logic
+    // --- MODIFIED --- Added "Order History" button
     const Header = ({ cartItemCount, onNavigate, currentPage }) => {
       return (
         <header className="bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-primary-500)] shadow-lg sticky top-0 z-50">
@@ -132,22 +128,30 @@
               Dine Smart 1.0
             </div>
             
-            {/* --- NEW --- Conditional logic for Back vs. Cart button */}
             <div className="flex items-center space-x-4">
               {currentPage === 'menu' ? (
-                // Show Cart on Menu page
-                <button
-                  onClick={() => onNavigate('cart')}
-                  className="relative text-[var(--color-text-header)] hover:text-[var(--color-secondary-300)] transition-colors duration-300 transform hover:scale-105"
-                  aria-label="Open cart"
-                >
-                  <ShoppingCart className="w-6 h-6" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-[var(--color-secondary-400)] text-[var(--color-primary-800)] text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold animate-pulse">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </button>
+                // Show History and Cart on Menu page
+                <>
+                  <button
+                    onClick={() => onNavigate('history')}
+                    className="relative text-[var(--color-text-header)] hover:text-[var(--color-secondary-300)] transition-colors duration-300 transform hover:scale-105"
+                    aria-label="Order History"
+                  >
+                    <ClipboardList className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={() => onNavigate('cart')}
+                    className="relative text-[var(--color-text-header)] hover:text-[var(--color-secondary-300)] transition-colors duration-300 transform hover:scale-105"
+                    aria-label="Open cart"
+                  >
+                    <ShoppingCart className="w-6 h-6" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-[var(--color-secondary-400)] text-[var(--color-primary-800)] text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold animate-pulse">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </button>
+                </>
               ) : (
                 // Show Back to Menu on all other pages
                 <button
@@ -166,7 +170,6 @@
     };
 
     // --- Helper Component: Menu Item Card ---
-    // --- MODIFIED --- Currency change
     const MenuItemCard = ({ item, onAddToCart }) => (
       <div className="bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl group relative">
         <img src={item.image} alt={item.name} className="w-full h-36 object-cover transform transition-transform duration-300 group-hover:scale-110" />
@@ -184,13 +187,11 @@
     );
 
     // --- Page Component: MenuScreen ---
-    // --- MODIFIED --- Added Search state and filtering logic
+    // (Contains Search logic from previous step)
     const MenuScreen = ({ onAddToCart }) => {
-      // --- NEW --- State for the search term
       const [searchTerm, setSearchTerm] = useState('');
       const lowerSearchTerm = searchTerm.toLowerCase();
 
-      // --- NEW --- Filtering logic
       const filteredSpecials = menuData.specials.filter(item =>
         item.name.toLowerCase().includes(lowerSearchTerm)
       );
@@ -203,14 +204,13 @@
           );
           return [category, filteredItems];
         })
-        .filter(([category, filteredItems]) => filteredItems.length > 0); // Hide empty categories
+        .filter(([category, filteredItems]) => filteredItems.length > 0);
 
       const noResults = filteredSpecials.length === 0 && filteredOtherCategories.length === 0;
 
       return (
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           
-          {/* --- Hero Banner --- */}
           <section className="mb-12 bg-gray-800 rounded-xl shadow-2xl overflow-hidden relative" style={{ backgroundImage: `url(${heroImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <div className="bg-black bg-opacity-60 p-8 md:p-16 text-center">
               <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-3 animate-fadeIn">
@@ -222,7 +222,6 @@
             </div>
           </section>
 
-          {/* --- NEW --- Search Bar */}
           <section className="mb-12">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -247,7 +246,6 @@
             </div>
           </section>
           
-          {/* --- NEW --- No Results Message */}
           {noResults && (
             <div className="text-center p-10 bg-white rounded-xl shadow-lg">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">No results found</h2>
@@ -255,7 +253,6 @@
             </div>
           )}
 
-          {/* --- MODIFIED --- Specials Section (now uses filteredSpecials) */}
           {filteredSpecials.length > 0 && (
             <section key="specials" className="mb-12">
               <h2 className="text-4xl font-extrabold text-[var(--color-primary-700)] mb-6 capitalize border-l-8 border-[var(--color-secondary-400)] pl-4 py-2 bg-gradient-to-r from-[var(--color-secondary-100)] to-white rounded-r-full shadow-md flex items-center">
@@ -270,7 +267,6 @@
             </section>
           )}
 
-          {/* --- MODIFIED --- Regular Categories (now uses filteredOtherCategories) */}
           {filteredOtherCategories.map(([category, items]) => (
             <section key={category} className="mb-12">
               <h2 className="text-4xl font-extrabold text-gray-800 mb-6 capitalize border-l-8 border-[var(--color-primary-600)] pl-4 py-2 bg-[var(--color-primary-50)] rounded-r-full shadow-md flex items-center">
@@ -287,7 +283,6 @@
     };
 
     // --- Page Component: CartScreen ---
-    // --- MODIFIED --- Currency change
     const CartScreen = ({ cart, onUpdateQuantity, onRemoveFromCart, onNavigate, total }) => (
       <div className="container mx-auto max-w-3xl p-4 sm:p-6 lg:p-8 my-8">
         <div className="bg-white shadow-2xl rounded-xl overflow-hidden border-t-8 border-[var(--color-primary-600)]">
@@ -372,31 +367,18 @@
     };
     
     // --- Page Component: PaymentScreen ---
-    // --- MODIFIED --- Default tip is 0, currency changed
+    // (Contains "No Tip" logic from previous step)
     const PaymentScreen = ({ onPlaceOrder, total }) => {
       const [tipPercent, setTipPercent] = useState(0); // Default 0 tip
       const [customTip, setCustomTip] = useState("");
       const [isCustom, setIsCustom] = useState(false);
-
       const tipPercentages = [0, 0.10, 0.15, 0.20]; 
 
-      const handleTipSelect = (percent) => {
-        setIsCustom(false);
-        setCustomTip("");
-        setTipPercent(percent);
-      };
-      
-      const handleCustomClick = () => {
-        setIsCustom(true);
-        setTipPercent(0);
-      };
-      
+      const handleTipSelect = (percent) => { setIsCustom(false); setCustomTip(""); setTipPercent(percent); };
+      const handleCustomClick = () => { setIsCustom(true); setTipPercent(0); };
       const handleCustomChange = (e) => {
         const val = e.target.value;
-        if (val === "" || /^\d*\.?\d*$/.test(val)) {
-          setCustomTip(val);
-          setTipPercent(0);
-        }
+        if (val === "" || /^\d*\.?\d*$/.test(val)) { setCustomTip(val); setTipPercent(0); }
       };
 
       const tipAmount = isCustom ? (parseFloat(customTip) || 0) : total * tipPercent;
@@ -408,7 +390,6 @@
           <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border-t-8 border-[var(--color-primary-500)] animate-fadeIn">
             <CircleDollarSign className="w-12 h-12 text-[var(--color-primary-600)] mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Payment</h2>
-            
             <div className="bg-[var(--color-primary-50)] p-4 rounded-lg mb-6 border border-[var(--color-primary-100)]">
               <div className="flex justify-between text-lg font-medium text-gray-700">
                 <span>Subtotal:</span>
@@ -418,43 +399,21 @@
               <div className="text-lg font-medium text-gray-700 mb-3">Add a Tip:</div>
               <div className="flex space-x-2 mb-3">
                 {tipPercentages.map(percent => (
-                  <button 
-                    key={percent}
-                    onClick={() => handleTipSelect(percent)}
-                    className={`flex-1 py-2 px-3 font-bold rounded-lg transition-colors ${
-                      tipPercent === percent && !isCustom 
-                      ? 'bg-[var(--color-primary-600)] text-white' 
-                      : 'bg-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-200)]'
-                    }`}
-                  >
-                    {percent === 0 ? 'No Tip' : `${percent * 100}%`}
-                  </button>
+                  <button key={percent} onClick={() => handleTipSelect(percent)}
+                    className={`flex-1 py-2 px-3 font-bold rounded-lg transition-colors ${ tipPercent === percent && !isCustom ? 'bg-[var(--color-primary-600)] text-white' : 'bg-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-200)]' }`}
+                  > {percent === 0 ? 'No Tip' : `${percent * 100}%`} </button>
                 ))}
-                <button 
-                  onClick={handleCustomClick}
-                  className={`flex-1 py-2 px-3 font-bold rounded-lg transition-colors ${
-                    isCustom 
-                    ? 'bg-[var(--color-primary-600)] text-white' 
-                    : 'bg-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-200)]'
-                  }`}
-                >
-                  Custom
-                </button>
+                <button onClick={handleCustomClick}
+                  className={`flex-1 py-2 px-3 font-bold rounded-lg transition-colors ${ isCustom ? 'bg-[var(--color-primary-600)] text-white' : 'bg-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-200)]' }`}
+                > Custom </button>
               </div>
-              
               {isCustom && (
                 <div className="relative mb-3">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
-                  <input
-                    type="text"
-                    value={customTip}
-                    onChange={handleCustomChange}
-                    placeholder="Enter amount"
-                    className="w-full px-4 py-2 pl-7 border border-[var(--color-primary-200)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] transition-colors"
-                  />
+                  <input type="text" value={customTip} onChange={handleCustomChange} placeholder="Enter amount"
+                    className="w-full px-4 py-2 pl-7 border border-[var(--color-primary-200)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] transition-colors" />
                 </div>
               )}
-              
               <div className="flex justify-between text-lg font-medium text-gray-700">
                 <span>Tip:</span>
                 <span className="font-bold">₹{tipAmount.toFixed(2)}</span>
@@ -465,20 +424,12 @@
                 <span>₹{grandTotal.toFixed(2)}</span>
               </div>
             </div>
-            
             <p className="text-gray-600 mb-8 text-center">How would you like to pay?</p>
-            
             <div className="space-y-4">
-              <button
-                onClick={() => onPlaceOrder('payNow', finalTipAmount, grandTotal)}
-                className="w-full bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-danger-600)] text-white font-semibold py-4 px-6 rounded-lg text-lg hover:from-[var(--color-primary-600)] hover:to-[var(--color-danger-600)] transition-all duration-300 transform hover:-translate-y-1 shadow-lg"
-              >
+              <button onClick={() => onPlaceOrder('payNow', finalTipAmount, grandTotal)} className="w-full bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-danger-600)] text-white font-semibold py-4 px-6 rounded-lg text-lg hover:from-[var(--color-primary-600)] hover:to-[var(--color-danger-600)] transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
                 Pay Now (Show QR)
               </button>
-              <button
-                onClick={() => onPlaceOrder('payLater', finalTipAmount, grandTotal)}
-                className="w-full bg-gray-700 text-white font-semibold py-4 px-6 rounded-lg text-lg hover:bg-gray-800 transition-colors duration-300 transform hover:-translate-y-1 shadow-lg"
-              >
+              <button onClick={() => onPlaceOrder('payLater', finalTipAmount, grandTotal)} className="w-full bg-gray-700 text-white font-semibold py-4 px-6 rounded-lg text-lg hover:bg-gray-800 transition-colors duration-300 transform hover:-translate-y-1 shadow-lg">
                 Pay at the Desk
               </button>
             </div>
@@ -516,9 +467,71 @@
         </div>
       </div>
     );
+    
+    // --- NEW --- Order History Page
+    const OrderHistoryScreen = ({ orders, onReorder, onNavigate }) => {
+      // Helper to format the date
+      const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+      };
+      
+      return (
+        <div className="container mx-auto max-w-3xl p-4 sm:p-6 lg:p-8 my-8">
+          <div className="bg-white shadow-2xl rounded-xl overflow-hidden border-t-8 border-[var(--color-primary-600)]">
+            <div className="p-6 border-b border-[var(--color-primary-100)] bg-[var(--color-primary-50)]">
+              <h2 className="text-3xl font-bold text-center text-[var(--color-primary-800)]">Your Order History</h2>
+            </div>
+            
+            {orders.length === 0 ? (
+              <div className="text-center p-10">
+                <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-center text-gray-600 p-4 text-xl font-medium">You don't have any past orders yet.</p>
+                <button 
+                  onClick={() => onNavigate('menu')}
+                  className="bg-[var(--color-primary-600)] text-white font-bold py-2 px-6 rounded-lg text-lg hover:bg-[var(--color-primary-700)] transition-colors"
+                >
+                  Start an Order
+                </button>
+              </div>
+            ) : (
+              <div className="divide-y divide-[var(--color-primary-100)]">
+                {/* Show newest orders first */}
+                {orders.map(order => (
+                  <div key={order.id} className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-3">
+                      <div>
+                        <p className="text-xl font-bold text-[var(--color-primary-800)]">Order #{order.id.slice(-6)}</p>
+                        <p className="text-sm text-gray-500">{formatDate(order.date)}</p>
+                      </div>
+                      <p className="text-2xl font-extrabold text-gray-800 mt-2 sm:mt-0">
+                        Total: ₹{order.total.toFixed(2)}
+                      </p>
+                    </div>
+                    <ul className="mb-4 pl-4 border-l-2 border-gray-200 space-y-1">
+                      {order.items.map(item => (
+                        <li key={item.id} className="text-gray-700">
+                          <span className="font-semibold">{item.quantity}x</span> {item.name}
+                        </li>
+                      ))}
+                    </ul>
+                    <button 
+                      onClick={() => onReorder(order.items)}
+                      className="w-full sm:w-auto bg-[var(--color-secondary-500)] text-[var(--color-primary-800)] font-bold py-2 px-5 rounded-lg text-md hover:bg-[var(--color-secondary-400)] transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <RotateCw className="w-5 h-5" />
+                      <span>Reorder This Meal</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
 
-    // --- Page Component: FloatingCartBar ---
-    // --- MODIFIED --- Currency change
+    // --- (Paste FloatingCartBar component here - No Changes) ---
     const FloatingCartBar = ({ cartItemCount, total, onNavigate }) => {
       const [isBumping, setIsBumping] = useState(false);
       const mounted = useRef(false);
@@ -551,13 +564,25 @@
       const [currentPage, setCurrentPage] = useState('menu'); 
       const [tableId, setTableId] = useState('N/A'); 
       const [cart, setCart] = useState([]); 
-      const [lastOrder, setLastOrder] = useState({ id: null, paymentMethod: null }); 
+      const [lastOrder, setLastOrder] = useState({ id: null, paymentMethod: null });
+      // --- NEW --- State for order history
+      const [orderHistory, setOrderHistory] = useState([]);
 
+      // --- MODIFIED --- Now also loads order history
       useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const table = urlParams.get('table');
         setTableId(table || 'Walk-In');
-      }, []);
+        
+        // --- NEW --- Load Order History from localStorage on mount
+        try {
+          const savedHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+          setOrderHistory(savedHistory);
+        } catch (e) {
+          console.error("Failed to load order history", e);
+          localStorage.removeItem('orderHistory'); // Clear bad data
+        }
+      }, []); // Runs once on mount
 
       const addToCart = (item) => {
         setCart(prevCart => {
@@ -566,6 +591,31 @@
           else { return [...prevCart, { ...item, quantity: 1 }]; }
         });
       };
+      
+      // --- NEW --- Helper function to add multiple items (for reorder)
+      const addItemsToCart = (itemsToAdd) => {
+        setCart(prevCart => {
+          const newCart = [...prevCart]; // Start with a copy
+          
+          itemsToAdd.forEach(itemToAdd => {
+            const existingItemIndex = newCart.findIndex(cartItem => cartItem.id === itemToAdd.id);
+            
+            if (existingItemIndex > -1) {
+              // Item exists, just update quantity
+              newCart[existingItemIndex] = {
+                ...newCart[existingItemIndex],
+                quantity: newCart[existingItemIndex].quantity + itemToAdd.quantity
+              };
+            } else {
+              // New item, add it
+              newCart.push(itemToAdd);
+            }
+          });
+          
+          return newCart; // Return the merged cart
+        });
+      };
+      
       const updateQuantity = (itemId, change) => {
         setCart(prevCart => {
           const itemToUpdate = prevCart.find(i => i.id === itemId);
@@ -579,7 +629,7 @@
       const cartItemCount = useMemo(() => cart.reduce((acc, item) => acc + item.quantity, 0), [cart]);
       const total = useMemo(() => cart.reduce((acc, item) => acc + item.price * item.quantity, 0), [cart]);
 
-      // --- MODIFIED --- Now accepts tip and grandTotal
+      // --- MODIFIED --- Now saves order to localStorage
       const handlePlaceOrder = (paymentMethod, tip, grandTotal) => {
         const fakeOrderId = `O-${Date.now()}`;
         
@@ -590,10 +640,20 @@
           subtotal: total,
           tip: tip,
           total: grandTotal,
-          status: 'Pending',
-          payment: paymentMethod
+          payment: paymentMethod,
+          date: new Date().toISOString() // --- NEW --- Add date to order
         };
-
+        
+        // --- NEW --- Save to localStorage
+        try {
+          // Add new order to the top of the list
+          const updatedHistory = [newOrder, ...orderHistory]; 
+          localStorage.setItem('orderHistory', JSON.stringify(updatedHistory));
+          setOrderHistory(updatedHistory); // Update state
+        } catch (e) {
+          console.error("Failed to save order history", e);
+        }
+        
         console.log("Simulating order placement:", newOrder);
         
         setCart([]);
@@ -601,10 +661,17 @@
         setCurrentPage('confirmation');
       };
 
+      // --- NEW --- Reorder handler
+      const handleReorder = (items) => {
+        addItemsToCart(items);
+        handleNavigate('cart'); // Go to cart to show the items
+      };
+
       const handleNavigate = (page) => {
         setCurrentPage(page);
       };
 
+      // --- MODIFIED --- Added 'history' page
       const renderPage = () => {
         switch (currentPage) {
           case 'menu': return <MenuScreen onAddToCart={addToCart} />;
@@ -612,18 +679,19 @@
           case 'otp': return <OTPScreen onNavigate={handleNavigate} />;
           case 'payment': return <PaymentScreen onPlaceOrder={handlePlaceOrder} total={total} />;
           case 'confirmation': return <ConfirmationScreen orderId={lastOrder.id} paymentMethod={lastOrder.paymentMethod} onNavigate={handleNavigate} />;
+          // --- NEW ---
+          case 'history': return <OrderHistoryScreen orders={orderHistory} onReorder={handleReorder} onNavigate={handleNavigate} />;
           default: return <MenuScreen onAddToCart={addToCart} />;
         }
       };
 
       return (
         <div className="min-h-screen font-sans">
-          {/* --- MODIFIED --- Pass currentPage to Header */}
           <Header cartItemCount={cartItemCount} onNavigate={handleNavigate} currentPage={currentPage} />
           <main key={currentPage} className="animate-fadeIn pb-28"> 
-            {tableId && (
+            {tableId && currentPage !== 'history' && ( // Don't show table on history page
               <div className="bg-[var(--color-primary-100)] text-[var(--color-primary-800)] text-center font-semibold p-2 shadow-inner">
-                Ordering for Table: S<strong>{tableId}</strong>
+                Ordering for Table: <strong>{tableId}</strong>
               </div>
             )}
             {renderPage()}
